@@ -9,19 +9,21 @@ const defaultProps = {
   offset: [0, 8],
 };
 
-function Popover(props) {
-  const arrowClasses = classNames('popover-arrow', props.arrowClassName);
-  const popperClasses = classNames('popover', 'show', props.popperClassName);
-  const classes = classNames('popover-inner', props.innerClassName);
+class Popover extends React.Component {
+  render() {
+    const arrowClasses = classNames('popover-arrow', this.props.arrowClassName);
+    const popperClasses = classNames('popover', 'show', this.props.popperClassName);
+    const classes = classNames('popover-inner', this.props.innerClassName);
 
-  return (
-    <TooltipPopoverWrapper
-      {...props}
-      arrowClassName={arrowClasses}
-      popperClassName={popperClasses}
-      innerClassName={classes}
-    />
-  );
+    return (
+      <TooltipPopoverWrapper
+        {...this.props}
+        arrowClassName={arrowClasses}
+        popperClassName={popperClasses}
+        innerClassName={classes}
+      />
+    );
+  }
 }
 
 Popover.propTypes = propTypes;

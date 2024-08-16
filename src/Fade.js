@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Transition } from 'react-transition-group';
@@ -38,42 +38,47 @@ const defaultProps = {
   in: true,
 };
 
-function Fade(props) {
-  const ref = useRef(null);
+class Fade extends React.Component {
+  constructor(props) {
+    super(props);
+    this.ref = React.createRef();
+  }
 
-  const {
-    tag: Tag = 'div',
-    baseClass = 'fade',
-    baseClassActive = 'show',
-    className,
-    cssModule,
-    children,
-    innerRef = ref,
-    ...otherProps
-  } = props;
+  render() {
+    const {
+      tag: Tag = 'div',
+      baseClass = 'fade',
+      baseClassActive = 'show',
+      className,
+      cssModule,
+      children,
+      innerRef = this.ref,
+      ...otherProps
+    } = this.props;
 
-  const transitionProps = pick(
-    { defaultProps, ...otherProps },
-    TransitionPropTypeKeys,
-  );
-  const childProps = omit(otherProps, TransitionPropTypeKeys);
+    const transitionProps = pick(
+      { defaultProps, ...otherProps },
+      TransitionPropTypeKeys,
+    );
+    const childProps = omit(otherProps, TransitionPropTypeKeys);
 
-  return (
-    <Transition nodeRef={innerRef} {...transitionProps}>
-      {(status) => {
-        const isActive = status === 'entered';
-        const classes = mapToCssModules(
-          classNames(className, baseClass, isActive && baseClassActive),
-          cssModule,
-        );
-        return (
-          <Tag className={classes} {...childProps} ref={innerRef}>
-            {children}
-          </Tag>
-        );
-      }}
-    </Transition>
-  );
+    return (
+      <Transition nodeRef={innerRef} {...transitionProps}>
+        {(status) => {
+          const isActive = status === 'entered';
+          const classes = mapToCssModules(
+            classNames(className, baseClass, isActive && baseClassActive),
+            cssModule,
+          );
+          return (
+            <Tag className={classes} {...childProps} ref={innerRef}>
+              {children}
+            </Tag>
+          );
+        }}
+      </Transition>
+    );
+  }
 }
 
 Fade.propTypes = propTypes;

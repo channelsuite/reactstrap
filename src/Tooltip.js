@@ -9,19 +9,21 @@ const defaultProps = {
   trigger: 'hover focus',
 };
 
-function Tooltip(props) {
-  const arrowClasses = classNames('tooltip-arrow', props.arrowClassName);
-  const popperClasses = classNames('tooltip', 'show', props.popperClassName);
-  const classes = classNames('tooltip-inner', props.innerClassName);
+class Tooltip extends React.Component {
+  render() {
+    const arrowClasses = classNames('tooltip-arrow', this.props.arrowClassName);
+    const popperClasses = classNames('tooltip', 'show', this.props.popperClassName);
+    const classes = classNames('tooltip-inner', this.props.innerClassName);
 
-  return (
-    <TooltipPopoverWrapper
-      {...props}
-      arrowClassName={arrowClasses}
-      popperClassName={popperClasses}
-      innerClassName={classes}
-    />
-  );
+    return (
+      <TooltipPopoverWrapper
+        {...this.props}
+        arrowClassName={arrowClasses}
+        popperClassName={popperClasses}
+        innerClassName={classes}
+      />
+    );
+  }
 }
 
 Tooltip.propTypes = propTypes;

@@ -34,66 +34,68 @@ const propTypes = {
   transition: PropTypes.shape(Fade.propTypes),
 };
 
-function Alert(props) {
-  const {
-    className,
-    closeClassName,
-    closeAriaLabel = 'Close',
-    cssModule,
-    tag: Tag = 'div',
-    color = 'success',
-    isOpen = true,
-    toggle,
-    children,
-    transition = {
+class Alert extends React.Component {
+  render() {
+    const {
+      className,
+      closeClassName,
+      closeAriaLabel = 'Close',
+      cssModule,
+      tag: Tag = 'div',
+      color = 'success',
+      isOpen = true,
+      toggle,
+      children,
+      transition = {
+        ...Fade.defaultProps,
+        unmountOnExit: true,
+      },
+      fade = true,
+      innerRef,
+      ...attributes
+    } = this.props;
+
+    const classes = mapToCssModules(
+      classNames(className, 'alert', `alert-${color}`, {
+        'alert-dismissible': toggle,
+      }),
+      cssModule,
+    );
+
+    const closeClasses = mapToCssModules(
+      classNames('btn-close', closeClassName),
+      cssModule,
+    );
+
+    const alertTransition = {
       ...Fade.defaultProps,
-      unmountOnExit: true,
-    },
-    fade = true,
-    innerRef,
-    ...attributes
-  } = props;
+      ...transition,
+      baseClass: fade ? transition.baseClass : '',
+      timeout: fade ? transition.timeout : 0,
+    };
 
-  const classes = mapToCssModules(
-    classNames(className, 'alert', `alert-${color}`, {
-      'alert-dismissible': toggle,
-    }),
-    cssModule,
-  );
-
-  const closeClasses = mapToCssModules(
-    classNames('btn-close', closeClassName),
-    cssModule,
-  );
-
-  const alertTransition = {
-    ...Fade.defaultProps,
-    ...transition,
-    baseClass: fade ? transition.baseClass : '',
-    timeout: fade ? transition.timeout : 0,
-  };
-
-  return (
-    <Fade
-      {...attributes}
-      {...alertTransition}
-      tag={Tag}
-      className={classes}
-      in={isOpen}
-      role="alert"
-      innerRef={innerRef}
-    >
-      {toggle ? (
-        <button
-          type="button"
-          className={closeClasses}
-          aria-label={closeAriaLabel}
-          onClick={toggle}
-        />
-      ) : null}
-      {children}
-    </Fade>
-  );
+    return (
+      <Fade
+        {...attributes}
+        {...alertTransition}
+        tag={Tag}
+        className={classes}
+        in={isOpen}
+        role="alert"
+        innerRef={innerRef}
+      >
+        {toggle ? (
+          <button
+            type="button"
+            className={closeClasses}
+            aria-label={closeAriaLabel}
+            onClick={toggle}
+          />
+        ) : null}
+        {children}
+      </Fade>
+    );
+  }
 }
 
 Alert.propTypes = propTypes;
